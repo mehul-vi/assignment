@@ -33,6 +33,15 @@ let ragIngestionPromise = null;
 app.use(cors());
 app.use(express.json());
 
+
+app.use((req, res, next) => {
+  const matched = req.headers["x-matched-path"] || req.headers["x-vercel-matched-path"];
+  if (matched && (req.url.startsWith("/server.js") || req.url.startsWith("/api/index.js") || req.url === "/api")) {
+    req.url = matched;
+  }
+  next();
+});
+
 function startRagIngestion(pdfUrl = process.env.PDF_URL) {
   if (ragIngestionPromise) return ragIngestionPromise;
 
@@ -135,7 +144,7 @@ app.get("/", handleHealth);
 app.get("/health", handleHealth);
 app.get("/api/health", handleHealth);
 
-app.get("/api/slots", (req, res) => {
+app.get(["/slots", "/api/slots"], (req, res) => {
   try {
     res.json({ success: true, slots: getAvailableSlots() });
   } catch (error) {
@@ -392,12 +401,12 @@ app.post("/api/chat", optionalAuthentication, async (req, res) => {
     const cleanReply =
       typeof result.finalReply === "string"
         ? result.finalReply
-            .replace(
-              /[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu,
-              ""
-            )
-            .replace(/[ \t]+/g, " ")
-            .trim()
+          .replace(
+            /[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu,
+            ""
+          )
+          .replace(/[ \t]+/g, " ")
+          .trim()
         : result.finalReply;
 
     res.json({
