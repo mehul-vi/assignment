@@ -113,7 +113,7 @@ function requireIngestKey(req, res, next) {
 
 // ---------- public routes ----------
 
-app.get("/api/health", (req, res) => {
+function handleHealth(req, res) {
   const chunks = getIndexedChunks();
   const isReady = ragStatus === "ready" && chunks.length > 0;
 
@@ -129,7 +129,11 @@ app.get("/api/health", (req, res) => {
     vectorStore: isReady ? "initialized" : ragStatus === "indexing" ? "initializing" : "not-ready",
     timestamp: new Date().toISOString()
   });
-});
+}
+
+app.get("/", handleHealth);
+app.get("/health", handleHealth);
+app.get("/api/health", handleHealth);
 
 app.get("/api/slots", (req, res) => {
   try {
