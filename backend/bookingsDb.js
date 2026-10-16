@@ -4,15 +4,24 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_DIR = path.join(__dirname, "data");
-const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
+const DEFAULT_BOOKINGS_FILE = path.join(__dirname, "data", "bookings.json");
+const DATA_DIR = process.env.VERCEL ? "/tmp" : path.join(__dirname, "data");
+const BOOKINGS_FILE = process.env.VERCEL ? "/tmp/bookings.json" : path.join(DATA_DIR, "bookings.json");
 
 function ensureFileExists() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
   if (!fs.existsSync(BOOKINGS_FILE)) {
-    fs.writeFileSync(BOOKINGS_FILE, JSON.stringify([], null, 2), "utf8");
+    if (fs.existsSync(DEFAULT_BOOKINGS_FILE)) {
+      try {
+        fs.copyFileSync(DEFAULT_BOOKINGS_FILE, BOOKINGS_FILE);
+      } catch {
+        fs.writeFileSync(BOOKINGS_FILE, JSON.stringify([], null, 2), "utf8");
+      }
+    } else {
+      fs.writeFileSync(BOOKINGS_FILE, JSON.stringify([], null, 2), "utf8");
+    }
   }
 }
 
