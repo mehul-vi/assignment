@@ -138,7 +138,6 @@ agentic-hr-assistant/
 │   ├── package.json
 │   └── Dockerfile
 ├── docker-compose.yml
-├── package.json
 └── README.md
 ```
 
