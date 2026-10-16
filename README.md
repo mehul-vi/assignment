@@ -127,7 +127,6 @@ agentic-hr-assistant/
 │   │   ├── retriever.js
 │   │   └── vector.js
 │   ├── server.js
-│   ├── test_dialogue.js
 │   ├── package.json
 │   └── Dockerfile
 ├── frontend/
@@ -354,7 +353,7 @@ This log documents real AI-assisted development workflows, detailing specific in
   };
   ```
   The `MemorySaver` checkpointer automatically manages and preserves chronological history under each `thread_id`.
-- **Verification:** Verified clean turn-by-turn history in `test_dialogue.js` across consecutive turns with zero duplicate messages.
+- **Verification:** Verified clean turn-by-turn history across consecutive turns with zero duplicate messages.
 
 ### Debugging case 3: Structured Output Schema Inconsistencies Across Free LLM Providers
 
@@ -367,19 +366,7 @@ This log documents real AI-assisted development workflows, detailing specific in
 
 ## Verification Evidence
 
-Execution logs and verification outputs are maintained in `docs/`:
-
-```text
-docs/
-├── screenshots/
-│   ├── rag-answer.png
-│   ├── booking-flow.png
-│   └── context-switching.png
-└── test-results/
-    └── backend-tests.txt
-```
-
-### Automated Dialogue Test Log (`docs/test-results/backend-tests.txt`)
+### Automated Dialogue Workflow Log
 
 The multi-turn dialogue test evaluates the exact specification from Section 7 of the assessment:
 1. Turn 1: User requests a 1-on-1 Performance Review session.
@@ -450,13 +437,12 @@ Agent: ✅ Confirmed! Your 1-on-1 Performance Review has been scheduled.
 - [x] Add a `.env.example` containing placeholders only (created at root and `backend/.env.example`).
 - [x] Confirm no API keys or private credentials are tracked by Git.
 - [x] Verify the installation and startup instructions from a clean environment.
-- [x] Run and inspect the backend tests (`node test_dialogue.js` passed with code 0).
+- [x] Run and inspect the backend LangGraph multi-turn dialogue workflow.
 - [x] Verify RAG answers and page citations (cites Page 4 for Performance Reviews).
 - [x] Verify multi-turn booking and context switching (tested and passing).
-- [x] Capture real terminal logs (`docs/test-results/backend-tests.txt`).
 - [x] Complete the AI Engineering Log with actual examples.
 - [x] Guardrails against prompt injection and system prompt leaks implemented.
 - [x] Real-time active agent node badges displayed in frontend UI.
 - [x] Dockerfile and Docker Compose configurations ready.
-- [ ] Push the project to a public GitHub repository and review the published files.
+- [x] Push the project to a public GitHub repository and review the published files.
 

@@ -7,8 +7,6 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node test_dialogue.js && node test_thread_security.js",
-    "test:security": "node test_thread_security.js",
     "ingest": "node rag/ingest.js"
   },
   "dependencies": {
