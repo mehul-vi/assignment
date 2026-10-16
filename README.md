@@ -2,6 +2,11 @@
 
 A conversational HR assistant that combines **Retrieval-Augmented Generation (RAG)** with a stateful appointment-booking workflow. Users can ask questions about an employee handbook, book a performance review session, and interrupt a booking conversation to ask a policy question before continuing the booking.
 
+## Live Deployment Links
+
+- 🌐 **Frontend Application:** [https://assignment-6fdo.vercel.app/](https://assignment-6fdo.vercel.app/)
+- ⚙️ **Backend API (Express / LangGraph):** [https://assignment-z68x.vercel.app/](https://assignment-z68x.vercel.app/)
+
 ## Features
 
 - **Employee Handbook Q&A:** Retrieves relevant content from a PDF handbook and generates answers with page citations.
