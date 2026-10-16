@@ -1,0 +1,83 @@
+=================================================
+ TESTING MULTI-TURN AGENTIC WORKFLOW (LANGGRAPH) 
+=================================================
+
+[Setup] Ingesting Reference PDF...
+[Qdrant] Collection 'employee_handbook' already has 32 points. Skipping re-embedding.
+[RAG Ingestion] Stored 31 chunks across 11 pages in Qdrant.
+[Setup] PDF ingested and ready.
+
+[Router Node] Input: "Aisha Khan" | Current step: idle
+[LLM] Initialized ChatGroq with Gemini-1.5-Flash automatic fallback
+[Router Node] LLM Decision: booking | Name: Aisha Khan | Email: null
+[Booking Node] Handling booking. Step: idle | Interleaved: false
+[Router Node] Input: "3rd slot book kar de" | Current step: awaiting_slot
+[Router Node] LLM Decision: booking | Name: null | Email: null
+[Booking Node] Handling booking. Step: awaiting_slot | Interleaved: false
+[Router Node] Input: "how are you today?" | Current step: idle
+[Router Node] LLM Decision: chitchat | Name: null | Email: null
+[Chitchat Node] Handling small talk: "how are you today?"
+[Router Node] Input: "Tomorrow 3:00 PM" | Current step: idle
+[Router Node] LLM Decision: booking | Name: null | Email: null
+[Booking Node] Handling booking. Step: idle | Interleaved: false
+[Router Node] Input: "Let's go with Tomorrow 11:00 AM" | Current step: idle
+[Router Node] LLM Decision: booking | Name: null | Email: null
+[Booking Node] Handling booking. Step: idle | Interleaved: false
+[Router Node] Input: "mehul@gmai.com" | Current step: awaiting_details
+[Router Node] LLM Decision: booking | Name: null | Email: mehul@gmai.com
+[Booking Node] Handling booking. Step: awaiting_details | Interleaved: false
+[Router Node] Input: "cancel my slot" | Current step: confirmed
+[Router Node] LLM Decision: cancelled | Name: null | Email: null
+[Booking Node] Handling booking. Step: cancelled | Interleaved: false
+
+-------------------------------------------------
+TURN 1
+User: Hi, I need to book a 1-on-1 Performance Review session.
+[Router Node] Input: "Hi, I need to book a 1-on-1 Performance Review session." | Current step: cancelled
+[Router Node] LLM Decision: booking | Name: null | Email: null
+[Booking Node] Handling booking. Step: cancelled | Interleaved: false
+Agent: Great to meet you, **Aisha**! 🎉
+
+Here are the open review slots:
+• 📅 **1) Tomorrow 11:00 AM**
+• 📅 **2) Tomorrow 3:00 PM**
+• 📅 **3) Friday 10:30 AM**
+
+Please let me know which time suits you best.
+[State Debug] Active Node: booking_node | Booking Step: awaiting_slot | Name: Aisha Khan | Email: aisha.khan@company.com
+
+-------------------------------------------------
+TURN 2
+User: Alex Chen (alex.chen@example.com). Wait, before that, how often are performance reviews conducted according to the handbook?
+[Router Node] Input: "Alex Chen (alex.chen@example.com). Wait, before that, how often are performance reviews conducted according to the handbook?" | Current step: awaiting_slot
+[Router Node] LLM Decision: interleaved | Name: Alex Chen | Email: alex.chen@example.com
+[FAQ RAG Node] Retrieving knowledge for query: "how often are performance reviews conducted according to the handbook?"
+[Booking Node] Handling booking. Step: awaiting_slot | Interleaved: true
+Agent: [FAQ RAG Node - Citing Page 4]: According to the Employee Handbook, performance reviews at Zava are conducted annually. These reviews are designed as a two-way dialogue to help you discuss your past performance, receive feedback, and set goals for the upcoming year.
+
+Returning to your booking, **Aisha** — here are the available review slots:
+• 📅 **1) Tomorrow 11:00 AM**
+• 📅 **2) Tomorrow 3:00 PM**
+• 📅 **3) Friday 10:30 AM**
+
+Which slot works best for you?
+[State Debug] Active Node: booking_node | Booking Step: awaiting_slot | Name: Aisha Khan | Email: aisha.khan@company.com
+
+-------------------------------------------------
+TURN 3
+User: Let's go with Friday at 10:30 AM.
+[Router Node] Input: "Let's go with Friday at 10:30 AM." | Current step: awaiting_slot
+[Router Node] LLM Decision: booking | Name: null | Email: null
+[Booking Node] Handling booking. Step: awaiting_slot | Interleaved: false
+Agent: ✅ **Confirmed! Your 1-on-1 Performance Review has been scheduled.**
+
+• **Attendee:** Aisha Khan (aisha.khan@company.com)
+• **Session Time:** Friday 10:30 AM IST
+• **Reference ID:** `#REV-O0C1BT`
+
+A calendar invitation has been reserved for you. Please bring your self-review notes to the meeting!
+[State Debug] Active Node: booking_node | Booking Step: confirmed | Name: Aisha Khan | Email: aisha.khan@company.com
+
+=================================================
+ DIALOGUE TEST COMPLETED SUCCESSFULLY 
+=================================================
