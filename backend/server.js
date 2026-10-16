@@ -42,6 +42,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// Normalize API routing: allow both /route and /api/route seamlessly
+app.use((req, res, next) => {
+  if (req.url !== "/" && req.url !== "/health" && !req.url.startsWith("/api/") && req.url !== "/api") {
+    req.url = `/api${req.url.startsWith("/") ? "" : "/"}${req.url}`;
+  }
+  next();
+});
+
 function startRagIngestion(pdfUrl = process.env.PDF_URL) {
   if (ragIngestionPromise) return ragIngestionPromise;
 
