@@ -4,9 +4,9 @@
   "description": "Full Stack & Agentic AI Engineering - LangGraph, Node.js/Express, React, Tailwind CSS",
   "private": true,
   "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
     "dev:backend": "npm --prefix backend start",
-    "dev:frontend": "npm --prefix frontend dev",
-    "test:backend": "npm --prefix backend test"
+    "dev:frontend": "npm --prefix frontend dev"
   },
   "dependencies": {
     "@langchain/google-genai": "^2.3.2",
