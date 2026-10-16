@@ -10,8 +10,9 @@ const require = createRequire(import.meta.url);
 const pdf = require("pdf-parse");
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, "../data");
-const PDF_PATH = path.join(DATA_DIR, "employee_handbook.pdf");
+const BUNDLED_PDF = path.join(__dirname, "../data/employee_handbook.pdf");
+const DATA_DIR = process.env.VERCEL ? "/tmp" : path.join(__dirname, "../data");
+const PDF_PATH = process.env.VERCEL ? "/tmp/employee_handbook.pdf" : path.join(DATA_DIR, "employee_handbook.pdf");
 const DEFAULT_URL =
   "https://raw.githubusercontent.com/Azure-Samples/azure-search-openai-demo/main/data/employee_handbook.pdf";
 
@@ -24,6 +25,10 @@ let indexedChunks = [];
 // ---------- download ----------
 
 export async function downloadPDF(url = DEFAULT_URL, destPath = PDF_PATH, redirects = 5) {
+  if (fs.existsSync(BUNDLED_PDF) && fs.statSync(BUNDLED_PDF).size > 0) {
+    return BUNDLED_PDF;
+  }
+
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }

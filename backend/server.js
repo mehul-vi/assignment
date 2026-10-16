@@ -122,7 +122,21 @@ function requireIngestKey(req, res, next) {
 
 // ---------- public routes ----------
 
-function handleHealth(req, res) {
+async function handleHealth(req, res) {
+  if (ragStatus === "not-started" && !ragIngestionPromise) {
+    try {
+      await startRagIngestion();
+    } catch (err) {
+      console.error("[Health] RAG auto-start error:", err.message);
+    }
+  } else if (ragIngestionPromise) {
+    try {
+      await ragIngestionPromise;
+    } catch (err) {
+      console.error("[Health] RAG pending error:", err.message);
+    }
+  }
+
   const chunks = getIndexedChunks();
   const isReady = ragStatus === "ready" && chunks.length > 0;
 
@@ -477,6 +491,11 @@ async function startServer() {
 
 if (!process.env.VERCEL) {
   startServer();
+} else {
+  // On Vercel serverless, initialize RAG indexing eagerly
+  startRagIngestion().catch((error) => {
+    console.error("Vercel handbook indexing failed:", error.message);
+  });
 }
 
 export default app;
